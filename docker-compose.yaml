@@ -1,0 +1,24 @@
+
+services:
+  restaurantDb:
+    restart: always
+    image: postgres:15.3
+    container_name: restaurant-database
+
+    ports:
+      - 5432:5432
+
+    environment:
+      POSTGRES_DB: restaurant
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
+
+
+
+
+
+
+
