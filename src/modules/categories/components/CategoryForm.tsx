@@ -1,10 +1,14 @@
 "use client"
 import { FormEvent, useState } from 'react'
+import { useRouter } from 'next/navigation';
 
 import { toast } from 'sonner';
 import { Button, Input } from '@nextui-org/react'
+import { createCategory } from '../actions/create-category';
 
 export const CategoryForm = () => {
+
+    const router = useRouter();
 
     const [isLoading, setIsLoading] = useState(false)
 
@@ -28,12 +32,32 @@ export const CategoryForm = () => {
         };
 
 
+        const formData = new FormData();
+
+        formData.append("name", categoryName.value );
+        formData.append("image", image.files[0]);
+
+        console.log(formData);
 
         // EJECUTAR SERVER ACTIONS
+        const { error, message } = await createCategory(formData);
+
+        if( error ){
+            toast.warning("Ocurrio un error", {
+                description: message
+            })
+
+            setIsLoading( false );
+
+            return;
+        }
+
+        toast.success(message)
 
         setIsLoading( false );
 
-
+        router.push('/admin/categories')
+        return;
     }
 
 
