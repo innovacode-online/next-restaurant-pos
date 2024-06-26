@@ -1,18 +1,18 @@
-"use client"
-
-import { useUIStore } from "@/modules/shared/stores/ui.store";
-import { Button } from "@nextui-org/react";
+import { HeaderPage } from "@/modules/shared";
+import { ProductTable } from "@/modules/products";
 
 export default function ProductsPage() {
-
-    const { handleMenuOpen } = useUIStore();
-
     return (
-        <div>
-            <h1>pagina productos</h1>
+        <>
+            <HeaderPage
+                title="Productos"
+                description="Gestion de productos y comidas en el restaurante"
+                linkName="Agregar Producto"
+                pathName="/admin/products/new"
+            />
 
-            {/* <button onClick={saludo} className="bg-indigo-500 px-3 py-2 rounded-3xl text-white cursor-pointer hover:bg-indigo-600">Agregar productos</button> */}
-            <Button onClick={handleMenuOpen} color="success">Abrir menu</Button>
-        </div>
+            {/* PRODUCT TABLE */}
+            <ProductTable/>
+        </>
     );
 }
