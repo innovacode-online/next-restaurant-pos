@@ -28,7 +28,7 @@ export const UpdateCategoryModal = ({ category }: Props) => {
 
         formData.append('id', category.id)
         formData.append('name', categoryName.value);
-        formData.append('image', image.files[0] ? image.files[0] : null );
+        formData.append('image', image.files[0] );
 
         await udpateCategory(formData)
 

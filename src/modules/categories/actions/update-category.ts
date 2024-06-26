@@ -1,42 +1,37 @@
 "use server"
-
-import { createSlug } from "@/helpers/creaate-slug";
-import { prisma } from "@/lib/prisma";
-import { v2 as cloudinary } from "cloudinary";
 import { revalidatePath } from "next/cache";
+import { v2 as cloudinary } from "cloudinary";
+
+import { prisma } from "@/lib/prisma";
+import { createSlug } from "@/helpers/creaate-slug";
 
 export const udpateCategory = async (formData: FormData) => {
 
     const image = formData.get('image');
     const slug = createSlug(formData.get('name') as string);
     
+    if ( image === "undefined" ){
 
-    if ( image === undefined ){
-
+        const category = {
+            id: formData.get('id') as string,
+            name: formData.get('name') as string,
+            slug
+        }
+           
         try {
             
-            const imageUrl = await uploadImage(image as File);
-            
-            const category = {
-                id: formData.get('id') as string,
-                name: formData.get('name') as string,
-                image: imageUrl,
-                slug
-            }
-
             await prisma.category.update({
                 where: { id: category.id },
                 data: category
             });
-            
+    
             revalidatePath('/admin/categories')
-
+    
             return {
                 error: null,
                 message: "Se actualizo la categoria"
             };
-
-
+    
         } catch (error) {
             console.log(error);
             return {
@@ -48,25 +43,29 @@ export const udpateCategory = async (formData: FormData) => {
     } 
     
 
-    const category = {
-        id: formData.get('id') as string,
-        name: formData.get('name') as string,
-        slug
-    }
-       
+
     try {
-        
+            
+        const imageUrl = await uploadImage(image! as File);
+        const category = {
+            id: formData.get('id') as string,
+            name: formData.get('name') as string,
+            image: imageUrl,
+            slug
+        }
+
         await prisma.category.update({
             where: { id: category.id },
             data: category
         });
-
+        
         revalidatePath('/admin/categories')
 
         return {
             error: null,
             message: "Se actualizo la categoria"
         };
+
 
     } catch (error) {
         console.log(error);
