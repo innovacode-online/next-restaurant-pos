@@ -1,9 +1,11 @@
 "use client"
 
-
-import { DeleteProductModal, IProduct } from '@/modules/products';
-import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/react';
 import Image from 'next/image';
+
+import { ViewIcon } from 'hugeicons-react';
+import { DeleteProductModal, IProduct } from '@/modules/products';
+import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Button } from '@nextui-org/react';
+import { useRouter } from 'next/navigation';
 
 
 interface Props {
@@ -11,6 +13,9 @@ interface Props {
 }
 
 export const ProductTable = ({ products }: Props) => {
+
+    const router = useRouter();
+
     return (
         <section className='container pt-8'>
             <Table aria-label='Products management table'>
@@ -42,6 +47,7 @@ export const ProductTable = ({ products }: Props) => {
                                 <TableCell>{product.price}$</TableCell>
                                 <TableCell>{JSON.stringify(product.createdAt)}</TableCell>
                                 <TableCell>
+                                    <Button onPress={() => router.push(`/admin/products/${ product.slug }`)} color='primary' variant='light' isIconOnly startContent={ <ViewIcon/> } />
                                     <DeleteProductModal productId={product.id} />
                                 </TableCell>
                             </TableRow>
