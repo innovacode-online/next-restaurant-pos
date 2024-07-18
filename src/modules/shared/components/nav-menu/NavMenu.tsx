@@ -1,5 +1,6 @@
-import React from 'react'
+
 import { NavMenuButton } from './NavMenuButton'
+import { NavCartButton } from './NavCartButton'
 import { NavMenuSearchInput } from './NavMenuSearchInput'
 
 export const NavMenu = () => {
@@ -11,7 +12,7 @@ export const NavMenu = () => {
                 <NavMenuSearchInput/>
 
                 
-
+                <NavCartButton/>
             </div>
         </nav>
     )

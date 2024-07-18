@@ -1,7 +1,9 @@
 import Image from 'next/image'
+import { Product } from '@prisma/client'
+
+import { useCartStore } from '@/modules/cart';
 
 import { Button, Card } from '@nextui-org/react'
-import { Product } from '@prisma/client'
 import { ShoppingCart01Icon } from 'hugeicons-react';
 
 
@@ -10,6 +12,8 @@ interface Props {
 }
 
 export const ProductCard = ({ product }: Props) => {
+
+    const { addProductToCart } = useCartStore();
 
     return (
         <Card
@@ -49,6 +53,7 @@ export const ProductCard = ({ product }: Props) => {
 
                     {/* BUTTON */}
                     <Button
+                        onClick={() => addProductToCart( product )  }
                         color='primary'
                         startContent={ <ShoppingCart01Icon/> }
                     >
