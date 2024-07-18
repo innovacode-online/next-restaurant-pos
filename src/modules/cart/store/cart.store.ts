@@ -20,7 +20,7 @@ interface Actions {
     removeProductToCart: (id: string) => void
 
     calcTotal: () => void;
-
+    cleanCart: () => void;
 }
 
 const storeApi: StateCreator<CartState & Actions> = (set, get) => ({
@@ -113,6 +113,10 @@ const storeApi: StateCreator<CartState & Actions> = (set, get) => ({
 
         set({ total: subTotal });
 
+    },
+
+    cleanCart: () => {
+        set({ cart: [], total: 0 });
     }
 
 })
