@@ -1,10 +1,10 @@
 "use client"
-import { useState } from 'react'
+import { FormEvent, useState } from 'react'
 import { toast } from 'sonner'
 
 import { useCartStore, CartList } from '@/modules/cart'
 
-import { Button } from '@nextui-org/react'
+import { Button, Input } from '@nextui-org/react'
 import { Cancel01Icon } from 'hugeicons-react'
 import { createNewOrder } from '@/modules/orders/actions/create-new-order'
 
@@ -14,7 +14,7 @@ export const SideCart = () => {
     const { isCartOpen, handleCartOpen, total, cart, cleanCart } = useCartStore();
 
 
-    const generateNewOrder = async () => {
+    const generateNewOrder = async (e: FormEvent) => {
         setIsLoading( true );
 
         if( cart.length === 0 ){
@@ -22,7 +22,9 @@ export const SideCart = () => {
             return;
         }
 
-        const { error, message } = await createNewOrder( cart, total );
+        const { client } = e.target as HTMLFormElement;
+
+        const { error, message } = await createNewOrder( cart, total, client.value );
 
         if( error ){
             toast.error(message);
@@ -39,7 +41,7 @@ export const SideCart = () => {
 
 
     return (
-        <div className={`side__cart ${ isCartOpen && 'side__cart--show' }`}>
+        <form onSubmit={ generateNewOrder } className={`side__cart ${ isCartOpen && 'side__cart--show' }`}>
             <div className='flex items-center justify-between'>
 
                 <h3 className='font-bold text-2xl'>Carrito de compras</h3>
@@ -52,6 +54,14 @@ export const SideCart = () => {
                     startContent={ <Cancel01Icon/> }
                 />
             </div>
+            
+            <Input
+                size='sm'
+                placeholder='Nombre del cliente'
+                name='client'
+                className='my-4'
+            />
+
 
             {/* LISTADO DE CARRITO */}
             <CartList/>
@@ -66,12 +76,12 @@ export const SideCart = () => {
             <Button
                 fullWidth
                 color='primary'
-                onClick={generateNewOrder}
+                type="submit"
                 isLoading={ isLoading }
                 isDisabled={ isLoading }
             >
                 Generar Orden
             </Button>
-        </div>
+        </form>
     )
 }

@@ -5,7 +5,7 @@ import { ICart } from "@/modules/cart/interfaces/cart"
 import { revalidatePath } from "next/cache"
 
 
-export const createNewOrder = async (cart: ICart[], total: number ) => {
+export const createNewOrder = async (cart: ICart[], total: number, client: string ) => {
 
     // VERIFICAR EL STOCK DISPONOBLE
     cart.map(({ product, quantity }) =>  {
@@ -34,9 +34,9 @@ export const createNewOrder = async (cart: ICart[], total: number ) => {
     // ORDER DESCRIPTION
     const order = {
         total,
+        client,
         status: false,
         user: "usuario-1",
-        client: "Juan Perez"
     }
 
     // GENERAR VENTA
