@@ -2,6 +2,7 @@ import { Product } from '@prisma/client';
 import { ICart } from '../interfaces/cart';
 import { StateCreator, create } from 'zustand';
 import { toast } from 'sonner';
+import { persist } from 'zustand/middleware';
 
 interface CartState {
     cart: ICart[];
@@ -123,5 +124,8 @@ const storeApi: StateCreator<CartState & Actions> = (set, get) => ({
 
 
 export const useCartStore = create<CartState & Actions>()(
-    storeApi
+    persist(
+        storeApi,
+        { name: "cart-menu-storage" }
+    )
 );
