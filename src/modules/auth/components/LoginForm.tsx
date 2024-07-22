@@ -3,13 +3,16 @@ import { useState } from 'react'
 
 import { toast } from 'sonner';
 import { Button, Input } from '@nextui-org/react'
+import { loginWithCredentials } from '../actions/login-with-credentials';
+import { useRouter } from 'next/navigation';
 
 export const LoginForm = () => {
 
+    const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
 
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         setIsLoading(true);
@@ -26,8 +29,23 @@ export const LoginForm = () => {
         }
 
         // TODO: Agregar login con credenciales
+        const { error, message } = await loginWithCredentials(email.value, password.value)
+
+        if (error) {
+            toast.warning("Ocurrio un error", {
+                description: message
+            })
+            setIsLoading(false);
+
+            return;
+        }
+
+        toast.success(message)
 
         setIsLoading(false);
+
+        router.push('/admin/home');
+
 
     }
 

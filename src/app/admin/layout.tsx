@@ -1,7 +1,18 @@
+import { auth } from "@/auth";
 import { SideCart } from "@/modules/cart";
 import { NavMenu, SideMenu } from "@/modules/shared"
+import { redirect } from "next/navigation";
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+export default async function AdminLayout({ children }: { children: React.ReactNode }) {
+
+    const session = await auth();
+
+    console.log(session)
+
+    if( !session?.user ){
+        redirect("/auth/login");
+    }
+
     return (
         <div className="admin__layout">
             <SideMenu/>
