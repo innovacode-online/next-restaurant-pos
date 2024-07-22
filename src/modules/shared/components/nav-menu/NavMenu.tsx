@@ -2,17 +2,34 @@
 import { NavMenuButton } from './NavMenuButton'
 import { NavCartButton } from './NavCartButton'
 import { NavMenuSearchInput } from './NavMenuSearchInput'
+import { User } from '@nextui-org/react'
+import { User as IUser } from 'next-auth'
 
-export const NavMenu = () => {
+interface Props {
+    user: IUser;
+}
+
+export const NavMenu = ({ user }: Props) => {
     return (
         <nav className='navbar'>
             <div className="navbar__container">
-                <NavMenuButton/>
+                <NavMenuButton />
 
-                <NavMenuSearchInput/>
+                <NavMenuSearchInput />
 
-                
-                <NavCartButton/>
+                <div className='flex items-center gap-4'>
+                    <NavCartButton />
+                    <User
+                        name={user.name}
+                        description={user.email}
+                        avatarProps={{
+                            src: user.image!,
+                            alt: user.name!
+                        }}
+
+                    />
+                </div>
+
             </div>
         </nav>
     )

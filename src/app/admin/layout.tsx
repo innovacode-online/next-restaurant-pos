@@ -7,7 +7,6 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
     const session = await auth();
 
-    console.log(session)
 
     if( !session?.user ){
         redirect("/auth/login");
@@ -18,7 +17,9 @@ export default async function AdminLayout({ children }: { children: React.ReactN
             <SideMenu/>
             <SideCart/>
             <main className="admin__layout--main">
-                <NavMenu/>
+                <NavMenu
+                    user={ session.user }
+                />
                 { children }
             </main>
 
